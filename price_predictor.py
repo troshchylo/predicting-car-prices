@@ -1,4 +1,5 @@
 import pandas as pd
+import joblib
 from sklearn.tree import DecisionTreeRegressor
 from data_formatter import DataFormatter
 
@@ -40,10 +41,16 @@ class PricePredictor:
             'Pojemnosc skokowa': [car_features[4]],
             'Rodzaj paliwa': [car_features[5]]
         }
-        
+
         car_features_df = pd.DataFrame(car_features_dict)
         car_features_encoded = pd.get_dummies(car_features_df)
         car_features_encoded = car_features_encoded.reindex(
             columns=self.cars_features.columns, fill_value=0)
-        
+
         return self.model.predict(car_features_encoded)
+
+    def save_model(self, path):
+        joblib.dump(self.model, path)
+
+    def load_model(self, path):
+        self.model = joblib.load(path)

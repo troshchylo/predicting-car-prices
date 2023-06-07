@@ -11,10 +11,11 @@ class CarsSpider(scrapy.Spider):
                       'Przebieg',
                       'Pojemnosc skokowa',
                       'Rodzaj paliwa']
-    csv_path = 'cars.csv'
+    csv_path = 'car_dataset/cars.csv'
+    links_path = 'car_dataset/model_links.txt'
 
     def start_requests(self):
-        with open("models_links.txt", "r") as file:
+        with open(self.links_path, "r") as file:
             links = file.read().split("\n")
             for link in links:
                 yield scrapy.Request(url=f'{link}?page=1', headers=self.headers, callback=self.parse, meta={
@@ -59,13 +60,13 @@ class CarsSpider(scrapy.Spider):
 
         values = [value.strip()
                   for value in li_elements.css('::text').getall()]
-        
+
         if values[0] == "Niski przebieg":
             del values[0]
-            
+
         if "km" not in values[1]:
             values.insert(1, "0 km")
-        
+
         if values[2] in ["Elektryczny", "Hybryda"]:
             values[3] = values[2]
             values[2] = "0 cm3"
@@ -77,6 +78,7 @@ class CarsSpider(scrapy.Spider):
 
         car_data['Cena'] = raw_data.css(
             'span.ooa-1bmnxg7.evg565y11::text').get()
+
         return car_data
 
     def write_car_data_to_csv(self, car_data, path):
