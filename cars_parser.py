@@ -1,7 +1,4 @@
-import random
 import scrapy
-import unicodedata
-import time
 import csv
 
 
@@ -22,7 +19,7 @@ class CarsSpider(scrapy.Spider):
             for link in links:
                 yield scrapy.Request(url=f'{link}?page=1', headers=self.headers, callback=self.parse, meta={
                     'dont_redirect': True,
-                    'handle_httpstatus_list': [302],
+                    'handle_httpstatus_list': [302]
                 },
                     cb_kwargs={
                     'page': 1,
@@ -46,7 +43,8 @@ class CarsSpider(scrapy.Spider):
             next_page_url = f'{link}?page={page+1}'
 
             yield scrapy.Request(url=next_page_url, headers=self.headers, callback=self.parse, meta={
-                'dont_redirect': True
+                'dont_redirect': True,
+                'handle_httpstatus_list': [302]
             },
                 cb_kwargs={
                 'page': page + 1,
@@ -61,13 +59,16 @@ class CarsSpider(scrapy.Spider):
 
         values = [value.strip()
                   for value in li_elements.css('::text').getall()]
-
+        
         if values[0] == "Niski przebieg":
             del values[0]
-
-        if values[2] == "Elektryczny":
+            
+        if "km" not in values[1]:
+            values.insert(1, "0 km")
+        
+        if values[2] in ["Elektryczny", "Hybryda"]:
+            values[3] = values[2]
             values[2] = "0 cm3"
-            values[3] = 'Elektryczny'
 
         car_data = {'Marka pojazdu': brand, 'Model pojazdu': model}
 
