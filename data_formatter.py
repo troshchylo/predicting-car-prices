@@ -1,4 +1,5 @@
 import csv
+import json
 
 
 class DataFormatter:
@@ -45,3 +46,17 @@ class DataFormatter:
             "Diesel",
             "Elektryczny",
             "Hybryda"]
+
+    def brand_models_json(self, path):
+        bm_dict = {}
+
+        for brand, model, _, _, _, _, _ in self.data:
+            if brand not in bm_dict.keys():
+                bm_dict[brand] = set()
+            bm_dict[brand].add(model)
+
+        for brand, models in bm_dict.items():
+            bm_dict[brand] = list(models)
+
+        with open(path, "w") as outfile:
+            json.dump(bm_dict, outfile, indent=4)
