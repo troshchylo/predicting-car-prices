@@ -15,11 +15,6 @@ class DataAnalyzer:
         'Rodzaj paliwa',
         'Cena']
 
-    def __init__(self, path: str):
-        self.df = DataFormatter()
-        self.df.import_csv_data(path)
-        self.dataset = pd.DataFrame(self.df.get_data(), columns=self.columns)
-
     def __init__(self, df: DataFormatter):
         self.df = df
         self.dataset = pd.DataFrame(self.df.get_data(), columns=self.columns)
@@ -32,7 +27,7 @@ class DataAnalyzer:
         sorted_data.plot(kind='bar')
 
         plt.xlabel('Brand')
-        plt.ylabel('Average Price')
+        plt.ylabel('Average Price, PLN')
         plt.title('Average Price by Brand')
 
         plt.xticks(rotation=65, ha='right')
@@ -81,10 +76,10 @@ class DataAnalyzer:
         sorted_data.plot(kind='bar')
 
         plt.xlabel('Year of production')
-        plt.ylabel('Average Price')
-        plt.title('Average Price by year of production')
+        plt.ylabel('Average Price, PLN')
+        plt.title('Average price by year of production')
 
-        x_values = np.arange(0, len(sorted_data), 10)
+        x_values = np.arange(0, len(sorted_data), 5)
         plt.xticks(x_values, rotation=0)
 
         formatter = ticker.StrMethodFormatter('{x:,.0f}')

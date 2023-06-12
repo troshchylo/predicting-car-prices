@@ -5,25 +5,24 @@ from data_formatter import DataFormatter
 
 
 class PricePredictor:
+    columns = [
+        'Marka pojazdu',
+        'Model pojazdu',
+        'Rok produkcji',
+        'Przebieg',
+        'Pojemnosc skokowa',
+        'Rodzaj paliwa',
+        'Cena']
+
     def __init__(self):
         self.model = DecisionTreeRegressor()
         self.cars_features = pd.DataFrame()
         self.cars_prices = []
 
-    def import_cars_data(self, path):
-        df = DataFormatter()
-        df.import_csv_data(path)
+    def import_cars_data(self, df: DataFormatter):
         data = df.get_data()
-
-        columns = [
-            'Marka pojazdu',
-            'Model pojazdu',
-            'Rok produkcji',
-            'Przebieg',
-            'Pojemnosc skokowa',
-            'Rodzaj paliwa',
-            'Cena']
-        df_data = pd.DataFrame(data, columns=columns)
+        
+        df_data = pd.DataFrame(data, columns=self.columns)
 
         self.cars_features = df_data.drop('Cena', axis=1)
         self.cars_prices = df_data['Cena']
