@@ -11,8 +11,8 @@ class DataFormatter:
         return list(self.data)
 
     def import_csv_data(self, path):
-        with open(path, newline='') as file:
-            reader = csv.reader(file, delimiter=',', quotechar='|')
+        with open(path, newline="") as file:
+            reader = csv.reader(file, delimiter=",", quotechar="|")
 
             for row in reader:
                 if self.is_valid_row(row):
@@ -39,13 +39,19 @@ class DataFormatter:
             return int(amount * self.euro_rate)
 
     def is_valid_row(self, row):
-        return 'km' in row[3] and 'cm3' in row[4] and row[5] in [
-            "Benzyna",
-            "Benzyna+CNG",
-            "Benzyna+LPG",
-            "Diesel",
-            "Elektryczny",
-            "Hybryda"]
+        return (
+            "km" in row[3]
+            and "cm3" in row[4]
+            and row[5]
+            in [
+                "Benzyna",
+                "Benzyna+CNG",
+                "Benzyna+LPG",
+                "Diesel",
+                "Elektryczny",
+                "Hybryda",
+            ]
+        )
 
     def brand_models_json(self, path):
         bm_dict = {}
