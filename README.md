@@ -6,7 +6,7 @@ This repository contains code and resources for predicting car prices using mach
 
 ## Dataset
 
-The dataset used for this project is sourced from [provide_dataset_source_link_here]. It includes information about various car features such as make, model, year, mileage, etc.
+The dataset used for this project is sourced from otomoto.pl. It includes information about various car features such as make, model, year, mileage, etc.
 
 ## Requirements
 
